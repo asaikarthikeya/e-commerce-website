@@ -1,5 +1,13 @@
-import React, { useState } from 'react'
-import './Hero.css'
+// src/components/Hero.tsx
+
+import React, { useState } from 'react';
+import './Hero.css';
+
+export interface HeroProps {
+  /** Called when the Shop Now button is clicked. 
+      slideIndex: 0 = Kitchen, 1 = Electronics, 2 = Fashion */
+  onShop: (slideIndex: number) => void;
+}
 
 const slides = [
   {
@@ -15,16 +23,17 @@ const slides = [
   {
     title: 'Fashion & Clothing',
     subtitle: 'Step out in style with our trending collections.',
-    image: '/images/products/p1.png',
+    image: '/images/fashion.png',
   },
-]
+];
 
-const Hero: React.FC = () => {
-  const [index, setIndex] = useState(0)
+const Hero: React.FC<HeroProps> = ({ onShop }) => {
+  const [index, setIndex] = useState(0);
+
   const prev = () =>
-    setIndex((i) => (i === 0 ? slides.length - 1 : i - 1))
+    setIndex((i) => (i === 0 ? slides.length - 1 : i - 1));
   const next = () =>
-    setIndex((i) => (i === slides.length - 1 ? 0 : i + 1))
+    setIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
 
   return (
     <div className="hero-container">
@@ -36,7 +45,12 @@ const Hero: React.FC = () => {
         <div className="hero-text">
           <h1>{slides[index].title}</h1>
           <p>{slides[index].subtitle}</p>
-          <button className="shop-now">Shop Now</button>
+          <button
+            className="shop-now"
+            onClick={() => onShop(index)}
+          >
+            Shop Now
+          </button>
         </div>
 
         <div className="hero-image">
@@ -61,7 +75,7 @@ const Hero: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;
