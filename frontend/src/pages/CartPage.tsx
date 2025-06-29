@@ -1,15 +1,18 @@
+// src/pages/CartPage.tsx
+
 import React, { useState } from 'react';
-import { Link }            from 'react-router-dom';
-import { useAuth }         from '../contexts/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { useCart, CartItem } from '../contexts/CartContext';
 import './CartPage.css';
 
-const PRICE_PER_ITEM = 10; // must match LandingPage
+const PRICE_PER_ITEM = 10;
 
 const CartPage: React.FC = () => {
   const { user } = useAuth();
   const { cart, addToCart, removeFromCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<string>('');
+  const navigate = useNavigate();
 
   // compute total
   const total = cart.reduce(
@@ -17,6 +20,21 @@ const CartPage: React.FC = () => {
     0
   );
 
+  // When user clicks "Proceed to Payment"
+  const handleCheckout = () => {
+    if (!paymentMethod || cart.length === 0) return;
+
+    // Simulate success
+    alert(`Payment of $${total} via ${paymentMethod} successful!`);
+
+    // 1) Clear the cart
+    cart.forEach(item => removeFromCart(item.sku));
+
+    // 2) Redirect to home
+    navigate('/');
+  };
+
+  // Not logged in
   if (!user) {
     return (
       <div className="cart-page">
@@ -39,7 +57,8 @@ const CartPage: React.FC = () => {
             <li key={item.sku} className="cart-item">
               <span className="item-name">{item.name}</span>
               <span className="item-price">
-                ${PRICE_PER_ITEM} × {item.qty} = ${PRICE_PER_ITEM * item.qty}
+                ${PRICE_PER_ITEM} × {item.qty} = $
+                {PRICE_PER_ITEM * item.qty}
               </span>
               <div className="item-actions">
                 <button onClick={() => addToCart(item)}>＋</button>
@@ -91,14 +110,8 @@ const CartPage: React.FC = () => {
 
       <button
         className="checkout-btn"
-        disabled={
-          !user || cart.length === 0 || paymentMethod === ''
-        }
-        onClick={() =>
-          alert(
-            `Paid $${total} via ${paymentMethod || 'No method selected'}`
-          )
-        }
+        disabled={!user || cart.length === 0 || paymentMethod === ''}
+        onClick={handleCheckout}
       >
         {cart.length === 0
           ? 'Pay'

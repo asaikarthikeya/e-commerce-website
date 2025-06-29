@@ -9,20 +9,17 @@ const Header: React.FC = () => {
 
   return (
     <header className="header">
+      {/* left spacer, keeps logo centered */}
+      <div className="header-spacer" />
+
+      {/* centered logo */}
       <div className="header-logo">
         E<span>Mart</span>
       </div>
-      <nav className="header-nav">
-        <Link to="/">Home</Link>
-        <Link to="/">About Us</Link>
-        <Link to="/">Shop</Link>
-        <Link to="/">Blog</Link>
-        <Link to="/">Contact</Link>
-      </nav>
+
+      {/* icons on the right */}
       <div className="header-icons">
-        <Link to="/cart" className="icon">
-          🛒
-        </Link>
+        <Link to="/cart" className="icon">🛒</Link>
         {user ? (
           <>
             <span className="greeting">Hello, {user}</span>
@@ -37,9 +34,7 @@ const Header: React.FC = () => {
             </button>
           </>
         ) : (
-          <Link to="/auth" className="icon">
-            👤
-          </Link>
+          <Link to="/auth" className="icon">👤</Link>
         )}
       </div>
     </header>
