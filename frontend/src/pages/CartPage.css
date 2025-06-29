@@ -36,3 +36,81 @@
   font-size: 1rem;
   cursor: pointer;
 }
+
+/* CartPage.css */
+
+.cart-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cart-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.item-name {
+  flex: 2;
+  text-align: left;
+}
+
+.item-price {
+  flex: 1;
+}
+
+.item-actions button {
+  margin: 0 0.25rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.total {
+  font-size: 1.25rem;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+.payment-options {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.payment-options label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.payment-options input {
+  margin-right: 0.5rem;
+}
+
+.checkout-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #0070f3;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.checkout-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

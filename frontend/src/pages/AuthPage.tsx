@@ -24,8 +24,8 @@ const AuthPage: React.FC = () => {
     // FULL URL so it hits your backend
     const url =
       mode === 'login'
-        ? `${BACKEND}/api/auth/login`
-        : `${BACKEND}/api/auth/register`;
+        ? `http://localhost:4000/api/auth/login`
+        : `http://localhost:4000/api/auth/register`;
 
     try {
       const res = await fetch(url, {

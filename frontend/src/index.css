@@ -24,3 +24,52 @@
   object-fit: contain;
   margin-bottom: 0.5rem;
 }
+
+/* Add-to-cart icon button beside each product */
+.add-cart-icon {
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+.add-cart-icon:hover {
+  color: teal;
+}
+
+/* Checkout button in CartPage */
+.checkout-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #0070f3;
+  color: white;
+  transition: opacity 0.2s;
+}
+.checkout-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Price label under product name */
+.product-card .price {
+  font-weight: bold;
+  margin: 0.25rem 0;
+  color: #333;
+}
+
+/* Add-to-cart icon button */
+.add-cart-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  margin-top: 0.25rem;
+}
+.add-cart-icon:hover {
+  color: teal;
+}

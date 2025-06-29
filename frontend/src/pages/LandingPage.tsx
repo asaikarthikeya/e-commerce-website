@@ -1,13 +1,14 @@
-// src/pages/LandingPage.tsx
-
 import React, { useState, useRef } from 'react';
-import Header from '../components/Header';
 import Hero, { HeroProps } from '../components/Hero';
-import '../index.css'; // assuming this contains .product-grid, .product-card, etc.
+import { useCart }        from '../contexts/CartContext';
+import '../index.css';
 
 type Category = 'kitchen' | 'electronics' | 'fashion';
 
-const productData: Record<Category, { featured: string[]; newCollection: string[] }> = {
+const productData: Record<
+  Category,
+  { featured: string[]; newCollection: string[] }
+> = {
   kitchen: {
     featured: ['f1.png','f2.png','f3.png','f4.png','f5.png'],
     newCollection: ['n1.png','n2.png','n3.png','n4.png','n5.png'],
@@ -17,47 +18,55 @@ const productData: Record<Category, { featured: string[]; newCollection: string[
     newCollection: ['n6.png','n7.png','n8.png','n9.png','n10.png'],
   },
   fashion: {
-    featured: ['f11.png','f12.png','f13.png','f14.png','f15.png'],
+    featured: ['p1.png','p2.png','p3.png','p4.png','p5.png'],
     newCollection: ['n11.png','n12.png','n13.png','n14.png','n15.png'],
   },
 };
 
+const PRICE_PER_ITEM = 10; // $10 each
+
 const LandingPage: React.FC = () => {
-  // Which category to show
   const [category, setCategory] = useState<Category>('kitchen');
-  // Ref to scroll into
   const sectionsRef = useRef<HTMLDivElement>(null);
+  const { addToCart } = useCart();
 
-  // Called by Hero when "Shop Now" is clicked
-  const handleShop: HeroProps['onShop'] = (slideIndex) => {
-    const keys: Category[] = ['kitchen', 'electronics', 'fashion'];
-    const newCat = keys[slideIndex];
-    setCategory(newCat);
-
-    // Scroll the product sections into view
+  const handleShop: HeroProps['onShop'] = (index) => {
+    const keys: Category[] = ['kitchen','electronics','fashion'];
+    setCategory(keys[index]);
     sectionsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
-      {/* Pass our handler into Hero */}
       <Hero onShop={handleShop} />
 
-      {/* Wrap both sections so we can scroll here */}
       <div ref={sectionsRef}>
         {/* Featured Products */}
         <section style={{ padding: '3rem 2rem' }}>
           <h2>Featured Products</h2>
           <div className="product-grid">
-            {productData[category].featured.map((img, i) => (
-              <div className="product-card" key={`feat-${i}`}>
-                <img
-                  src={`/images/products/${img}`}
-                  alt={`Product ${i + 1}`}
-                />
-                <p>Product {i + 1}</p>
-              </div>
-            ))}
+            {productData[category].featured.map((file, i) => {
+              const sku = `feat-${category}-${i}`;
+              return (
+                <div className="product-card" key={sku}>
+                  <img
+                    src={`/images/products/${file}`}
+                    alt={`Product ${i + 1}`}
+                  />
+                  <p>Product {i + 1}</p>
+                  <p className="price">${PRICE_PER_ITEM}</p>
+                  <button
+                    className="add-cart-icon"
+                    onClick={() =>
+                      addToCart({ sku, name: `Product ${i + 1}` })
+                    }
+                    title="Add to Cart"
+                  >
+                    🛒
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -65,15 +74,28 @@ const LandingPage: React.FC = () => {
         <section style={{ padding: '3rem 2rem' }}>
           <h2>New Collection</h2>
           <div className="product-grid">
-            {productData[category].newCollection.map((img, i) => (
-              <div className="product-card" key={`new-${i}`}>
-                <img
-                  src={`/images/products/${img}`}
-                  alt={`New ${i + 1}`}
-                />
-                <p>New {i + 1}</p>
-              </div>
-            ))}
+            {productData[category].newCollection.map((file, i) => {
+              const sku = `new-${category}-${i}`;
+              return (
+                <div className="product-card" key={sku}>
+                  <img
+                    src={`/images/products/${file}`}
+                    alt={`New ${i + 1}`}
+                  />
+                  <p>New {i + 1}</p>
+                  <p className="price">${PRICE_PER_ITEM}</p>
+                  <button
+                    className="add-cart-icon"
+                    onClick={() =>
+                      addToCart({ sku, name: `New ${i + 1}` })
+                    }
+                    title="Add to Cart"
+                  >
+                    🛒
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </section>
       </div>
