@@ -40,7 +40,6 @@ const LandingPage: React.FC = () => {
 
   return (
     <>
-      <Header />
       {/* Pass our handler into Hero */}
       <Hero onShop={handleShop} />
 

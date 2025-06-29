@@ -1,21 +1,46 @@
 import React from 'react';
-import './Header.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import './Header.css';
 
 const Header: React.FC = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <header className="header">
-      <div className="header-logo">E<span>Mart</span></div>
+      <div className="header-logo">
+        E<span>Mart</span>
+      </div>
       <nav className="header-nav">
-        <a href="#">Home</a>
-        <a href="#">About Us</a>
-        <a href="#">Shop</a>
-        <a href="#">Blog</a>
-        <a href="#">Contact</a>
+        <Link to="/">Home</Link>
+        <Link to="/">About Us</Link>
+        <Link to="/">Shop</Link>
+        <Link to="/">Blog</Link>
+        <Link to="/">Contact</Link>
       </nav>
       <div className="header-icons">
-        <span className="icon">🛒</span>
-        <Link to="/auth" className="icon">👤</Link>
+        <Link to="/cart" className="icon">
+          🛒
+        </Link>
+        {user ? (
+          <>
+            <span className="greeting">Hello, {user}</span>
+            <button
+              className="icon logout-btn"
+              onClick={() => {
+                logout();
+                navigate('/');
+              }}
+            >
+              🔒
+            </button>
+          </>
+        ) : (
+          <Link to="/auth" className="icon">
+            👤
+          </Link>
+        )}
       </div>
     </header>
   );

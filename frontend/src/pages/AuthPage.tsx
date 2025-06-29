@@ -1,14 +1,16 @@
-// src/pages/AuthPage.tsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './AuthPage.css';
+
+const BACKEND = 'http://localhost:4000'; // your Express + Redis server
 
 const AuthPage: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const switchMode = () => {
     setMode(m => (m === 'login' ? 'signup' : 'login'));
@@ -18,25 +20,36 @@ const AuthPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const url = mode === 'login'
-      ? 'http://localhost:4000/api/auth/login'
-      : 'http://localhost:4000/api/auth/register';
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await res.json();
+    // FULL URL so it hits your backend
+    const url =
+      mode === 'login'
+        ? `${BACKEND}/api/auth/login`
+        : `${BACKEND}/api/auth/register`;
 
-    if (res.ok) {
-      // Show success message
-      alert(data.message || (mode === 'login' ? 'Login successful' : 'Registration successful'));
-      // Redirect to home page
-      navigate('/');
-    } else {
-      // Show error
-      alert(data.message || 'An error occurred');
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        if (mode === 'login') {
+          login(data.token);
+          alert(data.message || 'Login successful');
+          navigate('/');
+        } else {
+          alert(data.message || 'Registration successful');
+          setMode('login');
+        }
+      } else {
+        alert(data.message || 'An error occurred');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Cannot reach server');
     }
   };
 
